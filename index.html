@@ -15,6 +15,11 @@
             font-size: 2rem;
             color: #fff;
             overflow: hidden;
+            position: relative;
+        }
+        h1 {
+            z-index: 2;
+            position: relative;
         }
         .firework {
             position: absolute;
@@ -22,11 +27,28 @@
             height: 5px;
             background-color: white;
             border-radius: 50%;
-            animation: explode 1s ease-out infinite;
+            animation: sparkle 1s ease-out infinite, explode 1s ease-out infinite;
         }
         @keyframes explode {
             0% { transform: scale(1); opacity: 1; }
             100% { transform: scale(10); opacity: 0; }
+        }
+        @keyframes sparkle {
+            0% { box-shadow: 0 0 3px #ff0, 0 0 10px #ff0; }
+            100% { box-shadow: 0 0 3px #fff, 0 0 10px #fff; }
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ff6347;
+            opacity: 0.8;
+            animation: fall 3s linear infinite;
+            transform-origin: top;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-100px) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
         }
     </style>
 </head>
@@ -46,8 +68,24 @@
             setTimeout(() => firework.remove(), 1000);
         }
         setInterval(createFirework, 300);
+        
+        function createConfetti() {
+            const confetti = document.createElement('div');
+            confetti.classList.add('confetti');
+            document.body.appendChild(confetti);
+            
+            const x = Math.random() * window.innerWidth;
+            const y = -10; // Start above the screen
+            confetti.style.left = `${x}px`;
+            confetti.style.top = `${y}px`;
+            
+            // Randomize colors for confetti
+            const colors = ['#ff6347', '#ff9800', '#f5d300', '#8bc34a', '#00bcd4'];
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            setTimeout(() => confetti.remove(), 3000); // Remove after 3 seconds
+        }
+        setInterval(createConfetti, 100); // Create confetti every 100ms
     </script>
 </body>
-</html>
-
 </html>
